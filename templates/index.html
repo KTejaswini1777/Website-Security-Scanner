@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website Security Scanner</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #749594;
+            margin: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 30px auto;
+        }
+
+        h1 {
+            color: #0B6623;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 70%;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #466D1D;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3A5311;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .good {
+            color: green;
+        }
+
+        .bad {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🌐 Website Security Scanner</h1>
+
+    <div class="card">
+        <form method="POST">
+            <input type="text" name="url" placeholder="Enter website URL (https://...)" required>
+            <button type="submit">Scan</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="card result">
+
+        {% if result.error %}
+            <p class="bad">Error: {{ result.error }}</p>
+        {% else %}
+            <p><strong>URL:</strong> {{ result.url }}</p>
+            <p><strong>Status Code:</strong> {{ result.status }}</p>
+
+            <p><strong>HTTPS:</strong>
+                {% if result.https %}
+                    <span class="good">Secure (HTTPS)</span>
+                {% else %}
+                    <span class="bad">Not Secure (HTTP)</span>
+                {% endif %}
+            </p>
+
+            <p><strong>Response Time:</strong> {{ result.response_time }} sec</p>
+
+            <h3>Headers:</h3>
+            <ul>
+                {% for key, value in result.headers.items() %}
+                    <li><b>{{ key }}</b>: {{ value }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
